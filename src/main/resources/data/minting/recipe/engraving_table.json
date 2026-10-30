@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "@": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "pattern": [
+    "LL",
+    "@@",
+    "##"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minting:engraving_table"
+  }
+}

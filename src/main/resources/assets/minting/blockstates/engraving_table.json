@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "minting:block/engraving_table"
+    }
+  }
+}

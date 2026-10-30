@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "minting:block/engraving_table_bottom",
+    "east": "minting:block/engraving_table_side",
+    "north": "minting:block/engraving_table_front",
+    "particle": "minting:block/engraving_table_front",
+    "south": "minting:block/engraving_table_front",
+    "up": "minting:block/engraving_table_top",
+    "west": "minting:block/engraving_table_side"
+  }
+}
