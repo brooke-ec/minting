@@ -1,7 +1,8 @@
-package ec.brooke.minting.client.widgets;
+package ec.brooke.minting.client.screens.widgets;
 
 import ec.brooke.minting.Minting;
 import ec.brooke.minting.client.screens.EngravingScreen;
+import ec.brooke.minting.networking.ServerboundEngravePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -11,6 +12,7 @@ import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class EngravingPixel extends AbstractWidget {
@@ -73,5 +75,6 @@ public class EngravingPixel extends AbstractWidget {
         }
 
         screen.getBitmap().set(x, y, value);
+        PacketDistributor.sendToServer(new ServerboundEngravePacket(screen.getBitmap()));
     }
 }

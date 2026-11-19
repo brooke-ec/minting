@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import static ec.brooke.minting.blocks.MintingBlocks.BLOCKS;
 import static ec.brooke.minting.blocks.MintingBlocks.BLOCK_CODECS;
 import static ec.brooke.minting.items.MintingItems.ITEMS;
+import static ec.brooke.minting.items.components.MintingComponents.COMPONENTS;
 import static ec.brooke.minting.menus.MintingMenus.MENUS;
 
-// The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Minting.MODID)
 public class Minting {
     public static final String MODID = "minting";
@@ -20,6 +20,7 @@ public class Minting {
 
     public Minting(IEventBus modEventBus, ModContainer modContainer) {
         BLOCK_CODECS.register(modEventBus);
+        COMPONENTS.register(modEventBus);
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         MENUS.register(modEventBus);

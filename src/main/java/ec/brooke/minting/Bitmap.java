@@ -2,27 +2,36 @@ package ec.brooke.minting;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 
-import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.Base64;
 
 public class Bitmap {
     public static final int DEPTH = 2; // 2 bits per pixel
     private static final int LENGTH = (DEPTH * 10 * 10) / 8;
-    public static final Codec<Bitmap> CODEC = Codec.BYTE_BUFFER.comapFlatMap(buf -> {
-        if (buf.remaining() != LENGTH) return DataResult.error(() -> "PixelMask must be exactly " + LENGTH + " bytes long");
-        byte[] bits = new byte[LENGTH];
-        buf.get(bits);
-        return DataResult.success(new Bitmap(bits));
-    }, mask -> ByteBuffer.wrap(mask.bits));
-    private final byte[] bits;
+    public static final Codec<Bitmap> CODEC = Codec.STRING.comapFlatMap(buf -> {
+        byte[] bytes = Base64.getDecoder().decode(buf);
+        if (bytes.length != LENGTH) return DataResult.error(() -> "Bitmap must be exactly " + LENGTH + " bytes long");
+        return DataResult.success(new Bitmap(bytes));
+    }, mask -> Base64.getEncoder().encodeToString(mask.bytes));
+    public static final StreamCodec<ByteBuf, Bitmap> STREAM_CODEC = StreamCodec.of(
+            (buffer, bitmap) -> buffer.writeBytes(bitmap.bytes),
+            buffer -> {
+                byte[] bytes = new byte[LENGTH];
+                buffer.readBytes(bytes);
+                return new Bitmap(bytes);
+            }
+    );
+    private final byte[] bytes;
 
     public Bitmap() {
-        this.bits = new byte[LENGTH];
+        this.bytes = new byte[LENGTH];
     }
 
-    private Bitmap(byte[] bits) {
-        this.bits = bits;
+    private Bitmap(byte[] bytes) {
+        this.bytes = bytes;
     }
 
     private void checkBounds(int x, int y) {
@@ -38,7 +47,7 @@ public class Bitmap {
         int byteIndex = index / 8;
         int bitOffset = index % 8;
 
-        return (bits[byteIndex] >> bitOffset) & 0b11;
+        return (bytes[byteIndex] >> bitOffset) & 0b11;
     }
 
     public void set(int x, int y, int value) {
@@ -50,17 +59,17 @@ public class Bitmap {
         int byteIndex = index / 8;
         int bitOffset = index % 8;
 
-        bits[byteIndex] &= (byte) ~(0b11 << bitOffset);
-        bits[byteIndex] |= (byte) ((value & 0b11) << bitOffset);
+        bytes[byteIndex] &= (byte) ~(0b11 << bitOffset);
+        bytes[byteIndex] |= (byte) ((value & 0b11) << bitOffset);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Bitmap other && Arrays.equals(bits, other.bits);
+        return obj instanceof Bitmap other && Arrays.equals(bytes, other.bytes);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(bits);
+        return Arrays.hashCode(bytes);
     }
 }
