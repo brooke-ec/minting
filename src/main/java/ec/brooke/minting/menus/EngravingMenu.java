@@ -43,7 +43,7 @@ public class EngravingMenu extends ItemCombinerMenu {
 
     @Override
     public void createResult() {
-
+        
     }
 
     @Override
@@ -55,8 +55,8 @@ public class EngravingMenu extends ItemCombinerMenu {
     @Override
     protected @NotNull ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
         return ItemCombinerMenuSlotDefinition.create()
-                .withSlot(INPUT_SLOT, 78, 8, item -> true)
-                .withResultSlot(OUTPUT_SLOT, 78, 52)
+                .withSlot(INPUT_SLOT, 151, 8, item -> true)
+                .withResultSlot(OUTPUT_SLOT, 151, 52)
                 .build();
     }
 
