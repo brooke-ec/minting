@@ -14,7 +14,6 @@ public class MintingBlocks {
     public static final DeferredRegister<MapCodec<? extends Block>> BLOCK_CODECS = DeferredRegister.create(
             BuiltInRegistries.BLOCK_TYPE, Minting.MODID);
 
-
     public static final DeferredBlock<EngravingTableBlock> ENGRAVING_TABLE = BLOCKS.registerBlock("engraving_table",
             registryName -> new EngravingTableBlock(BlockBehaviour.Properties.of().destroyTime(2.0f).explosionResistance(10.0f)
                     .sound(SoundType.WOOD))
