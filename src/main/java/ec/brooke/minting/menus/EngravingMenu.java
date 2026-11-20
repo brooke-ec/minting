@@ -3,7 +3,7 @@ package ec.brooke.minting.menus;
 import ec.brooke.minting.Bitmap;
 import ec.brooke.minting.blocks.MintingBlocks;
 import ec.brooke.minting.items.MintingItems;
-import ec.brooke.minting.items.components.CoinShape;
+import ec.brooke.minting.items.components.DieShape;
 import ec.brooke.minting.items.components.MintingComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
@@ -62,7 +62,7 @@ public class EngravingMenu extends ItemCombinerMenu {
         if (input.getItem() == Items.IRON_INGOT && this.bitmap != null) {
             ItemStack result = new ItemStack(MintingItems.STRIKING_DIE.get());
             result.setCount(input.getCount());
-            result.set(MintingComponents.COIN_SHAPE, new CoinShape(this.bitmap));
+            result.set(MintingComponents.DIE_SHAPE, new DieShape(this.bitmap));
             this.resultSlots.setItem(OUTPUT_SLOT, result);
         } else {
             this.resultSlots.setItem(OUTPUT_SLOT, ItemStack.EMPTY);

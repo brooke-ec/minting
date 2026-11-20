@@ -10,7 +10,8 @@ import java.util.Base64;
 
 public class Bitmap {
     public static final int DEPTH = 2; // 2 bits per pixel
-    private static final int LENGTH = (DEPTH * 10 * 10) / 8;
+    public static final int SIZE = 10; // 10x10 pixels
+    private static final int LENGTH = (DEPTH * SIZE * SIZE) / 8;
     public static final Codec<Bitmap> CODEC = Codec.STRING.comapFlatMap(buf -> {
         byte[] bytes = Base64.getDecoder().decode(buf);
         if (bytes.length != LENGTH) return DataResult.error(() -> "Bitmap must be exactly " + LENGTH + " bytes long");

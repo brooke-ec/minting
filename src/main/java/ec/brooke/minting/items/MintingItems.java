@@ -21,6 +21,8 @@ public class MintingItems {
 
     public static final DeferredItem<Item> STRIKING_DIE = ITEMS.registerSimpleItem("striking_die");
 
+    public static final DeferredItem<Item> COIN = ITEMS.registerSimpleItem("coin");
+
     @SubscribeEvent
     public static void addCreativeTabs(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
