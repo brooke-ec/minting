@@ -1,5 +1,8 @@
 {
   "block.minting.engraving_table": "Engraving Table",
   "menu.title.minting.engraving": "Engrave Die",
-  "item.minting.striking_die": "Striking Die"
+  "item.minting.striking_die": "Striking Die",
+  "item.minting.coin": "%s Coin",
+  "material.minting.unknown": "Unknown",
+  "material.minting.gold": "Gold"
 }

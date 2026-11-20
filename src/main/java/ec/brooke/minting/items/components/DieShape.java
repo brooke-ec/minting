@@ -1,7 +1,7 @@
 package ec.brooke.minting.items.components;
 
 import com.mojang.serialization.Codec;
-import ec.brooke.minting.Bitmap;
+import ec.brooke.minting.data.Bitmap;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 

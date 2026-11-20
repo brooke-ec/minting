@@ -19,18 +19,18 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Minting.MODID)
-public class CoinModelOverride extends BakedModelWrapper<BakedModel> {
+public class CoinOverride extends BakedModelWrapper<BakedModel> {
     private final ItemOverrides overrides = new ItemOverrides() {
         @Nullable
         @Override
         public BakedModel resolve(@NotNull BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             @Nullable CoinDesign design = stack.get(MintingComponents.COIN_DESIGN);
-            if (design == null) return model;
-            return CoinModelCache.get(design);
+            if (design == null) design = CoinDesign.FALLBACK;
+            return CoinCache.getModel(design);
         }
     };
 
-    public CoinModelOverride(BakedModel originalModel) {
+    public CoinOverride(BakedModel originalModel) {
         super(originalModel);
     }
 
@@ -39,8 +39,8 @@ public class CoinModelOverride extends BakedModelWrapper<BakedModel> {
         event.getModels().computeIfPresent(
                 new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Minting.MODID, "coin"), "inventory"),
                 (location, model) -> {
-                    CoinModelCache.setTemplate(model);
-                    return new CoinModelOverride(model);
+                    CoinCache.setTemplate(model);
+                    return new CoinOverride(model);
                 }
         );
     }

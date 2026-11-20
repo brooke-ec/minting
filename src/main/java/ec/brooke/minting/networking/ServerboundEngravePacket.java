@@ -1,7 +1,7 @@
 package ec.brooke.minting.networking;
 
-import ec.brooke.minting.Bitmap;
 import ec.brooke.minting.Minting;
+import ec.brooke.minting.data.Bitmap;
 import ec.brooke.minting.menus.EngravingMenu;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;

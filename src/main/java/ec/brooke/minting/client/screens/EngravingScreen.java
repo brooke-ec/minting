@@ -1,8 +1,8 @@
 package ec.brooke.minting.client.screens;
 
-import ec.brooke.minting.Bitmap;
 import ec.brooke.minting.Minting;
 import ec.brooke.minting.client.screens.widgets.EngravingPixel;
+import ec.brooke.minting.data.Bitmap;
 import ec.brooke.minting.menus.EngravingMenu;
 import ec.brooke.minting.networking.ServerboundEngravePacket;
 import net.minecraft.client.gui.GuiGraphics;

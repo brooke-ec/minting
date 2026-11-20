@@ -1,4 +1,4 @@
-package ec.brooke.minting;
+package ec.brooke.minting.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Base64;
 
 public class Bitmap {
+    public static final Bitmap DEFAULT = new Bitmap(Base64.getDecoder().decode("P8A/AMADCgygAIAgAAgCoKowAMADAPwD/A=="));
     public static final int DEPTH = 2; // 2 bits per pixel
     public static final int SIZE = 10; // 10x10 pixels
     private static final int LENGTH = (DEPTH * SIZE * SIZE) / 8;

@@ -1,7 +1,7 @@
 package ec.brooke.minting.menus;
 
-import ec.brooke.minting.Bitmap;
 import ec.brooke.minting.blocks.MintingBlocks;
+import ec.brooke.minting.data.Bitmap;
 import ec.brooke.minting.items.MintingItems;
 import ec.brooke.minting.items.components.DieShape;
 import ec.brooke.minting.items.components.MintingComponents;
