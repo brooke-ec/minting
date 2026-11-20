@@ -2,6 +2,7 @@ package ec.brooke.minting.menus;
 
 import ec.brooke.minting.Bitmap;
 import ec.brooke.minting.blocks.MintingBlocks;
+import ec.brooke.minting.items.MintingItems;
 import ec.brooke.minting.items.components.CoinShape;
 import ec.brooke.minting.items.components.MintingComponents;
 import net.minecraft.sounds.SoundEvents;
@@ -40,7 +41,7 @@ public class EngravingMenu extends ItemCombinerMenu {
     protected void onTake(@NotNull Player player, @NotNull ItemStack stack) {
         stack.onCraftedBy(player.level(), player, stack.getCount());
         this.resultSlots.awardUsedRecipes(player, List.of(this.inputSlots.getItem(INPUT_SLOT)));
-        this.shrinkStackInSlot(INPUT_SLOT);
+        this.shrinkStackInSlot(INPUT_SLOT, stack.getCount());
         player.level().playSeededSound(null,
                 player.getX(), player.getY(),
                 player.getZ(), SoundEvents.ANVIL_USE,
@@ -59,7 +60,8 @@ public class EngravingMenu extends ItemCombinerMenu {
     public void createResult() {
         ItemStack input = this.inputSlots.getItem(INPUT_SLOT);
         if (input.getItem() == Items.IRON_INGOT && this.bitmap != null) {
-            ItemStack result = input.copy();
+            ItemStack result = new ItemStack(MintingItems.STRIKING_DIE.get());
+            result.setCount(input.getCount());
             result.set(MintingComponents.COIN_SHAPE, new CoinShape(this.bitmap));
             this.resultSlots.setItem(OUTPUT_SLOT, result);
         } else {
@@ -86,10 +88,10 @@ public class EngravingMenu extends ItemCombinerMenu {
                 .build();
     }
 
-    private void shrinkStackInSlot(int index) {
+    private void shrinkStackInSlot(int index, int amount) {
         ItemStack itemstack = this.inputSlots.getItem(index);
         if (!itemstack.isEmpty()) {
-            itemstack.shrink(1);
+            itemstack.shrink(amount);
             this.inputSlots.setItem(index, itemstack);
         }
     }
