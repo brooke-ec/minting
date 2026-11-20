@@ -2,7 +2,9 @@
   "values": {
     "minecraft:gold_nugget": {
       "texture": "minting:item/gold_coin",
-      "translation_key": "material.minting.gold"
+      "translation_key": "material.minting.gold",
+      "light": 4294964400,
+      "dark": 4286529290
     }
   }
 }
