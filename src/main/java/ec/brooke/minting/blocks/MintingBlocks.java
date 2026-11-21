@@ -6,6 +6,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -16,7 +18,12 @@ public class MintingBlocks {
 
     public static final DeferredBlock<EngravingTableBlock> ENGRAVING_TABLE = BLOCKS.registerBlock("engraving_table",
             registryName -> new EngravingTableBlock(BlockBehaviour.Properties.of().destroyTime(2.0f).explosionResistance(10.0f)
-                    .sound(SoundType.WOOD))
+                    .sound(SoundType.WOOD).mapColor(MapColor.COLOR_BROWN))
+    );
+
+    public static final DeferredBlock<CoiningPressBlock> COINING_PRESS = BLOCKS.registerBlock("coining_press",
+            registryName -> new CoiningPressBlock(BlockBehaviour.Properties.of().destroyTime(5.0f).explosionResistance(1200.0f).pushReaction(PushReaction.BLOCK)
+                    .sound(SoundType.METAL).mapColor(MapColor.METAL))
     );
 
 }

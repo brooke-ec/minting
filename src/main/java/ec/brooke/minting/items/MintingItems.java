@@ -19,14 +19,19 @@ public class MintingItems {
             MintingBlocks.ENGRAVING_TABLE
     );
 
+    public static final DeferredItem<BlockItem> COINING_PRESS = ITEMS.registerSimpleBlockItem("coining_press",
+            MintingBlocks.COINING_PRESS
+    );
+
     public static final DeferredItem<Item> STRIKING_DIE = ITEMS.registerSimpleItem("striking_die");
 
-    public static final DeferredItem<Item> COIN = ITEMS.register("coin", () -> new CoinItem(new Item.Properties()));
+    public static final DeferredItem<Item> COIN = ITEMS.register("coin", () -> new CoinItem(new Item.Properties().fireResistant()));
 
     @SubscribeEvent
     public static void addCreativeTabs(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             event.accept(ENGRAVING_TABLE);
+            event.accept(COINING_PRESS);
         }
     }
 }

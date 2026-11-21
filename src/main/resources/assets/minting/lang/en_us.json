@@ -4,5 +4,6 @@
   "item.minting.striking_die": "Striking Die",
   "item.minting.coin": "%s Coin",
   "material.minting.unknown": "Unknown",
-  "material.minting.gold": "Gold"
+  "material.minting.gold": "Gold",
+  "block.minting.coining_press": "Coining Press"
 }
