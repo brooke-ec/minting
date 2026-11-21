@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +22,7 @@ import java.util.List;
 public class EngravingMenu extends ItemCombinerMenu {
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
-
+    private static final Item INPUT_ITEM = Items.NETHERITE_INGOT;
     private Bitmap bitmap;
 
     public EngravingMenu(int containerId, Inventory playerInventory) {
@@ -34,7 +35,7 @@ public class EngravingMenu extends ItemCombinerMenu {
 
     @Override
     protected boolean mayPickup(@NotNull Player player, boolean hasStack) {
-        return this.inputSlots.getItem(INPUT_SLOT).getItem() == Items.IRON_INGOT && this.bitmap != null;
+        return this.inputSlots.getItem(INPUT_SLOT).getItem() == INPUT_ITEM && this.bitmap != null;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class EngravingMenu extends ItemCombinerMenu {
     @Override
     public void createResult() {
         ItemStack input = this.inputSlots.getItem(INPUT_SLOT);
-        if (input.getItem() == Items.IRON_INGOT && this.bitmap != null) {
+        if (input.getItem() == INPUT_ITEM && this.bitmap != null) {
             ItemStack result = new ItemStack(MintingItems.STRIKING_DIE.get());
             result.setCount(input.getCount());
             result.set(MintingComponents.DIE_SHAPE, new DieShape(this.bitmap));
@@ -76,7 +77,7 @@ public class EngravingMenu extends ItemCombinerMenu {
 
     @Override
     protected boolean canMoveIntoInputSlots(@NotNull ItemStack stack) {
-        return stack.getItem() == Items.IRON_INGOT;
+        return stack.getItem() == INPUT_ITEM;
     }
 
 
