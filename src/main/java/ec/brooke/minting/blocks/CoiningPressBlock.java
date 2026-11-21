@@ -1,10 +1,18 @@
 package ec.brooke.minting.blocks;
 
 import com.mojang.serialization.MapCodec;
+import ec.brooke.minting.menus.CoiningMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Rotation;
@@ -13,9 +21,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -63,5 +73,28 @@ public class CoiningPressBlock extends Block {
     @Override
     protected boolean isPathfindable(@NotNull BlockState state, @NotNull PathComputationType pathComputationType) {
         return false;
+    }
+
+    @Override
+    protected @NotNull InteractionResult useWithoutItem(
+            @NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player,
+            @NotNull BlockHitResult hitResult
+    ) {
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
+        } else {
+            player.openMenu(state.getMenuProvider(level, pos));
+            return InteractionResult.CONSUME;
+        }
+    }
+
+    @Nullable
+    @Override
+    protected MenuProvider getMenuProvider(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos) {
+        return new SimpleMenuProvider(
+                (id, inventory, player) -> new CoiningMenu(id, inventory,
+                        ContainerLevelAccess.create(level, pos)
+                ), Component.translatable("menu.title.minting.coining")
+        );
     }
 }

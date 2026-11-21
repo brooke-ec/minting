@@ -30,7 +30,7 @@ public class EngravingMenu extends ItemCombinerMenu {
     }
 
     public EngravingMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
-        super(MintingMenus.ENGRAVING_MENU.get(), containerId, playerInventory, access);
+        super(MintingMenus.ENGRAVING.get(), containerId, playerInventory, access);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class EngravingMenu extends ItemCombinerMenu {
     @Override
     protected @NotNull ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
         return ItemCombinerMenuSlotDefinition.create()
-                .withSlot(INPUT_SLOT, 151, 8, item -> true)
+                .withSlot(INPUT_SLOT, 151, 8, stack -> INPUT_ITEM.equals(stack.getItem()))
                 .withResultSlot(OUTPUT_SLOT, 151, 52)
                 .build();
     }

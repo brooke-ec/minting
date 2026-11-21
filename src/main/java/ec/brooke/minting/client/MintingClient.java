@@ -1,6 +1,7 @@
 package ec.brooke.minting.client;
 
 import ec.brooke.minting.Minting;
+import ec.brooke.minting.client.screens.CoiningScreen;
 import ec.brooke.minting.client.screens.EngravingScreen;
 import ec.brooke.minting.menus.MintingMenus;
 import net.neoforged.api.distmarker.Dist;
@@ -18,6 +19,7 @@ public class MintingClient {
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(MintingMenus.ENGRAVING_MENU.get(), EngravingScreen::new);
+        event.register(MintingMenus.ENGRAVING.get(), EngravingScreen::new);
+        event.register(MintingMenus.COINING.get(), CoiningScreen::new);
     }
 }

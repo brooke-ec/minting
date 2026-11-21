@@ -5,5 +5,6 @@
   "item.minting.coin": "%s Coin",
   "material.minting.unknown": "Unknown",
   "material.minting.gold": "Gold",
-  "block.minting.coining_press": "Coining Press"
+  "block.minting.coining_press": "Coining Press",
+  "menu.title.minting.coining": "Mint Coins"
 }

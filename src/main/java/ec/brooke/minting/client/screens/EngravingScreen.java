@@ -21,7 +21,7 @@ public class EngravingScreen extends ItemCombinerScreen<EngravingMenu> {
     private static final ResourceLocation EMPTY_INGOT = ResourceLocation.withDefaultNamespace("item/empty_slot_ingot");
     private static final List<ResourceLocation> INPUT_ICONS = List.of(EMPTY_INGOT);
     private static final Bitmap bitmap = new Bitmap(); // static so that the bitmap persists across screen openings
-    private final CyclingSlotBackground inputBackground = new CyclingSlotBackground(0);
+    private final CyclingSlotBackground inputBackground = new CyclingSlotBackground(EngravingMenu.INPUT_SLOT);
 
     public EngravingScreen(EngravingMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title, BACKGROUND);
