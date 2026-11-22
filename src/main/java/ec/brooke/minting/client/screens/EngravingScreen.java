@@ -4,7 +4,6 @@ import ec.brooke.minting.Minting;
 import ec.brooke.minting.client.screens.widgets.EngravingActionButton;
 import ec.brooke.minting.client.screens.widgets.EngravingPixel;
 import ec.brooke.minting.data.Bitmap;
-import ec.brooke.minting.items.components.DieShape;
 import ec.brooke.minting.items.components.MintingComponents;
 import ec.brooke.minting.menus.EngravingMenu;
 import ec.brooke.minting.networking.ServerboundEngravePacket;
@@ -92,10 +91,10 @@ public class EngravingScreen extends ItemCombinerScreen<EngravingMenu> {
     }
 
     public void loadBitmapFromDie() {
-        DieShape shape = menu.slots.get(EngravingMenu.INPUT_SLOT).getItem().get(MintingComponents.DIE_SHAPE);
+        Bitmap shape = menu.slots.get(EngravingMenu.INPUT_SLOT).getItem().get(MintingComponents.DIE_SHAPE);
 
         if (shape != null) {
-            bitmap = shape.bitmap().clone();
+            bitmap = shape.clone();
             PacketDistributor.sendToServer(new ServerboundEngravePacket(bitmap));
         }
     }

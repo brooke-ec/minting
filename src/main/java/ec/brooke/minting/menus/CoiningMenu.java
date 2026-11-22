@@ -1,11 +1,11 @@
 package ec.brooke.minting.menus;
 
 import ec.brooke.minting.blocks.MintingBlocks;
+import ec.brooke.minting.data.Bitmap;
 import ec.brooke.minting.data.CoinMaterial;
 import ec.brooke.minting.data.MintingDataMaps;
 import ec.brooke.minting.items.MintingItems;
 import ec.brooke.minting.items.components.CoinDesign;
-import ec.brooke.minting.items.components.DieShape;
 import ec.brooke.minting.items.components.MintingComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -64,7 +64,7 @@ public class CoiningMenu extends ItemCombinerMenu {
     public void createResult() {
         ItemStack input = inputSlots.getItem(MATERIAL_SLOT);
         ItemStack die = inputSlots.getItem(DIE_SLOT);
-        DieShape dieShape = getDieShape(die);
+        Bitmap dieShape = getDieShape(die);
 
         if (input.isEmpty() || die.isEmpty() || dieShape == null) {
             resultSlots.setItem(OUTPUT_SLOT, ItemStack.EMPTY);
@@ -73,7 +73,8 @@ public class CoiningMenu extends ItemCombinerMenu {
 
         ItemStack stack = MintingItems.COIN.toStack();
         ResourceLocation material = BuiltInRegistries.ITEM.getKey(input.getItem());
-        stack.set(MintingComponents.COIN_DESIGN, new CoinDesign(dieShape.bitmap(), material));
+        stack.set(MintingComponents.COIN_DESIGN, new CoinDesign(dieShape, material));
+        stack.set(MintingComponents.MINTER, player.getGameProfile().getName());
         stack.setCount(input.getCount());
         resultSlots.setItem(OUTPUT_SLOT, stack);
     }
@@ -101,7 +102,7 @@ public class CoiningMenu extends ItemCombinerMenu {
         return stack.getItemHolder().getData(MintingDataMaps.COIN_MATERIALS);
     }
 
-    private @Nullable DieShape getDieShape(ItemStack stack) {
+    private @Nullable Bitmap getDieShape(ItemStack stack) {
         return stack.get(MintingComponents.DIE_SHAPE);
     }
 }
