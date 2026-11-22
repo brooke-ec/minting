@@ -7,8 +7,8 @@ import net.minecraft.util.FastColor;
 
 public class CoinTexture {
     private static final int OFFSET = 3;
-    private static final float BITMAP_1 = 0.30f;
-    private static final float BITMAP_2 = 0.85f;
+    private static final float BITMAP_1 = 0.85f;
+    private static final float BITMAP_2 = 0.30f;
     private static final float BEVEL_DARK = 0.20f;
     private static final float BEVEL_LIGHT = 0.45f;
 
@@ -27,9 +27,9 @@ public class CoinTexture {
                 if (x < OFFSET || x >= OFFSET + Bitmap.SIZE || y < OFFSET || y >= OFFSET + Bitmap.SIZE) px = 0;
                 else {
                     switch (coin.bitmap().get(x - OFFSET, y - OFFSET)) {
+                        case 0 -> px = 0;
                         case 1 -> px = mix(px, dark, BITMAP_1);
                         case 2 -> px = mix(px, dark, BITMAP_2);
-                        case 3 -> px = 0;
                     }
                 }
 

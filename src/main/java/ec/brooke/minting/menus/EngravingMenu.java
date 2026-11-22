@@ -22,7 +22,7 @@ import java.util.List;
 public class EngravingMenu extends ItemCombinerMenu {
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
-    private static final Item INPUT_ITEM = Items.NETHERITE_INGOT;
+    private static final List<Item> INPUT_ITEMS = List.of(Items.NETHERITE_INGOT, MintingItems.STRIKING_DIE.get());
     private Bitmap bitmap;
 
     public EngravingMenu(int containerId, Inventory playerInventory) {
@@ -60,7 +60,7 @@ public class EngravingMenu extends ItemCombinerMenu {
     @Override
     public void createResult() {
         ItemStack input = this.inputSlots.getItem(INPUT_SLOT);
-        if (input.getItem() == INPUT_ITEM && this.bitmap != null) {
+        if (isValidInput(input) && this.bitmap != null) {
             ItemStack result = new ItemStack(MintingItems.STRIKING_DIE.get());
             result.setCount(input.getCount());
             result.set(MintingComponents.DIE_SHAPE, new DieShape(this.bitmap));
@@ -77,14 +77,14 @@ public class EngravingMenu extends ItemCombinerMenu {
 
     @Override
     protected boolean canMoveIntoInputSlots(@NotNull ItemStack stack) {
-        return stack.getItem() == INPUT_ITEM;
+        return isValidInput(stack);
     }
 
 
     @Override
     protected @NotNull ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
         return ItemCombinerMenuSlotDefinition.create()
-                .withSlot(INPUT_SLOT, 151, 8, stack -> INPUT_ITEM.equals(stack.getItem()))
+                .withSlot(INPUT_SLOT, 151, 8, this::isValidInput)
                 .withResultSlot(OUTPUT_SLOT, 151, 52)
                 .build();
     }
@@ -100,5 +100,9 @@ public class EngravingMenu extends ItemCombinerMenu {
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
         this.createResult();
+    }
+
+    public boolean isValidInput(ItemStack stack) {
+        return INPUT_ITEMS.contains(stack.getItem());
     }
 }
