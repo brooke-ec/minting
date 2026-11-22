@@ -35,7 +35,7 @@ public class EngravingMenu extends ItemCombinerMenu {
 
     @Override
     protected boolean mayPickup(@NotNull Player player, boolean hasStack) {
-        return this.inputSlots.getItem(INPUT_SLOT).getItem() == INPUT_ITEM && this.bitmap != null;
+        return !this.resultSlots.isEmpty();
     }
 
     @Override
