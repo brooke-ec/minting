@@ -20,10 +20,14 @@ import org.jetbrains.annotations.Nullable;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Minting.MODID)
 public class CoinOverride extends BakedModelWrapper<BakedModel> {
+    private static boolean enabled = true;
+
     private final ItemOverrides overrides = new ItemOverrides() {
         @Nullable
         @Override
         public BakedModel resolve(@NotNull BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
+            if (!enabled) return model;
+
             @Nullable CoinDesign design = stack.get(MintingComponents.COIN_DESIGN);
             if (design == null) design = CoinDesign.FALLBACK;
             return CoinCache.getModel(design);
@@ -43,6 +47,11 @@ public class CoinOverride extends BakedModelWrapper<BakedModel> {
                     return new CoinOverride(model);
                 }
         );
+    }
+
+    public static void setEnabled(boolean enabled) {
+        
+        CoinOverride.enabled = enabled;
     }
 
     @Override

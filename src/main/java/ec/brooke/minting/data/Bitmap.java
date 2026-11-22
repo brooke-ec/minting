@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Base64;
 
 public class Bitmap implements Cloneable {
-    public static final Bitmap DEFAULT = new Bitmap(Base64.getDecoder().decode("P8A/AMADCgygAIAgAAgCoKowAMADAPwD/A=="));
+    public static final Bitmap DEFAULT = new Bitmap(Base64.getDecoder().decode("AAAAAAAAAABVBZRvQf4bpKoBVQUAAAAAAA=="));
     public static final int DEPTH = 2; // 2 bits per pixel
     public static final int SIZE = 10; // 10x10 pixels
     private static final int LENGTH = (DEPTH * SIZE * SIZE) / 8;
@@ -87,5 +87,14 @@ public class Bitmap implements Cloneable {
     @Override
     public Bitmap clone() {
         return new Bitmap(bytes.clone());
+    }
+
+    public void invert() {
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                int value = get(x, y);
+                set(x, y, 3 - value);
+            }
+        }
     }
 }
