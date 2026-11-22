@@ -42,9 +42,10 @@ public class CoiningMenu extends ItemCombinerMenu {
 
     @Override
     protected void onTake(@NotNull Player player, @NotNull ItemStack stack) {
+        stack.shrink(1);
+        slots.get(MATERIAL_SLOT).set(stack);
         stack.onCraftedBy(player.level(), player, stack.getCount());
         this.resultSlots.awardUsedRecipes(player, List.of(this.inputSlots.getItem(MATERIAL_SLOT), this.inputSlots.getItem(DIE_SLOT)));
-        this.shrinkStackInSlot(MATERIAL_SLOT, stack.getCount());
         player.level().playSeededSound(null,
                 player.getX(), player.getY(),
                 player.getZ(), SoundEvents.ANVIL_LAND,
@@ -94,14 +95,6 @@ public class CoiningMenu extends ItemCombinerMenu {
                 .withSlot(DIE_SLOT, 76, 47, item -> getDieShape(item) != null)
                 .withResultSlot(2, 134, 47)
                 .build();
-    }
-
-    private void shrinkStackInSlot(int index, int amount) {
-        ItemStack itemstack = this.inputSlots.getItem(index);
-        if (!itemstack.isEmpty()) {
-            itemstack.shrink(amount);
-            this.inputSlots.setItem(index, itemstack);
-        }
     }
 
     private @Nullable CoinMaterial getMaterial(ItemStack stack) {

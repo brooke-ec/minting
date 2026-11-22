@@ -40,9 +40,10 @@ public class EngravingMenu extends ItemCombinerMenu {
 
     @Override
     protected void onTake(@NotNull Player player, @NotNull ItemStack stack) {
+        stack.shrink(1);
+        slots.get(INPUT_SLOT).set(stack);
         stack.onCraftedBy(player.level(), player, stack.getCount());
         this.resultSlots.awardUsedRecipes(player, List.of(this.inputSlots.getItem(INPUT_SLOT)));
-        this.shrinkStackInSlot(INPUT_SLOT, stack.getCount());
         player.level().playSeededSound(null,
                 player.getX(), player.getY(),
                 player.getZ(), SoundEvents.ANVIL_USE,
@@ -80,21 +81,12 @@ public class EngravingMenu extends ItemCombinerMenu {
         return isValidInput(stack);
     }
 
-
     @Override
     protected @NotNull ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
         return ItemCombinerMenuSlotDefinition.create()
                 .withSlot(INPUT_SLOT, 151, 8, this::isValidInput)
                 .withResultSlot(OUTPUT_SLOT, 151, 52)
                 .build();
-    }
-
-    private void shrinkStackInSlot(int index, int amount) {
-        ItemStack itemstack = this.inputSlots.getItem(index);
-        if (!itemstack.isEmpty()) {
-            itemstack.shrink(amount);
-            this.inputSlots.setItem(index, itemstack);
-        }
     }
 
     public void setBitmap(Bitmap bitmap) {
