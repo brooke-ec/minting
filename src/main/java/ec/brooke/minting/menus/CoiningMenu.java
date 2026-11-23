@@ -2,7 +2,6 @@ package ec.brooke.minting.menus;
 
 import ec.brooke.minting.blocks.MintingBlocks;
 import ec.brooke.minting.data.Bitmap;
-import ec.brooke.minting.data.CoinMaterial;
 import ec.brooke.minting.data.MintingDataMaps;
 import ec.brooke.minting.items.MintingItems;
 import ec.brooke.minting.items.components.CoinDesign;
@@ -37,15 +36,20 @@ public class CoiningMenu extends ItemCombinerMenu {
 
     @Override
     protected boolean mayPickup(@NotNull Player player, boolean hasStack) {
-        return !this.resultSlots.isEmpty();
+        ItemStack input = inputSlots.getItem(MATERIAL_SLOT);
+        ItemStack die = inputSlots.getItem(DIE_SLOT);
+        return isMaterial(input) && isDie(die);
     }
 
     @Override
     protected void onTake(@NotNull Player player, @NotNull ItemStack stack) {
-        stack.shrink(1);
-        slots.get(MATERIAL_SLOT).set(stack);
         stack.onCraftedBy(player.level(), player, stack.getCount());
         this.resultSlots.awardUsedRecipes(player, List.of(this.inputSlots.getItem(MATERIAL_SLOT), this.inputSlots.getItem(DIE_SLOT)));
+
+        // I think there might be a bug here, because `stack` is different things depending on if quick move is used or not
+        if (inputSlots.getItem(MATERIAL_SLOT).getCount() == stack.getCount()) this.inputSlots.setItem(MATERIAL_SLOT, ItemStack.EMPTY);
+        else inputSlots.getItem(MATERIAL_SLOT).setCount(stack.getCount()); // quick move path (hopefully)
+
         player.level().playSeededSound(null,
                 player.getX(), player.getY(),
                 player.getZ(), SoundEvents.ANVIL_LAND,
@@ -62,18 +66,17 @@ public class CoiningMenu extends ItemCombinerMenu {
 
     @Override
     public void createResult() {
+        Bitmap shape = getDieShape(inputSlots.getItem(DIE_SLOT));
         ItemStack input = inputSlots.getItem(MATERIAL_SLOT);
-        ItemStack die = inputSlots.getItem(DIE_SLOT);
-        Bitmap dieShape = getDieShape(die);
 
-        if (input.isEmpty() || die.isEmpty() || dieShape == null) {
+        if (input.isEmpty() || shape == null) {
             resultSlots.setItem(OUTPUT_SLOT, ItemStack.EMPTY);
             return;
         }
 
         ItemStack stack = MintingItems.COIN.toStack();
         ResourceLocation material = BuiltInRegistries.ITEM.getKey(input.getItem());
-        stack.set(MintingComponents.COIN_DESIGN, new CoinDesign(dieShape, material));
+        stack.set(MintingComponents.COIN_DESIGN, new CoinDesign(shape, material));
         stack.set(MintingComponents.MINTER, player.getGameProfile().getName());
         stack.setCount(input.getCount());
         resultSlots.setItem(OUTPUT_SLOT, stack);
@@ -81,28 +84,32 @@ public class CoiningMenu extends ItemCombinerMenu {
 
     @Override
     public int getSlotToQuickMoveTo(@NotNull ItemStack stack) {
-        return getDieShape(stack) != null ? DIE_SLOT : MATERIAL_SLOT;
+        return isDie(stack) ? DIE_SLOT : MATERIAL_SLOT;
     }
 
     @Override
     protected boolean canMoveIntoInputSlots(@NotNull ItemStack stack) {
-        return getDieShape(stack) != null || getMaterial(stack) != null;
+        return isDie(stack) || isMaterial(stack);
     }
 
     @Override
     protected @NotNull ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
         return ItemCombinerMenuSlotDefinition.create()
-                .withSlot(MATERIAL_SLOT, 27, 47, stack -> getMaterial(stack) != null)
-                .withSlot(DIE_SLOT, 76, 47, item -> getDieShape(item) != null)
+                .withSlot(MATERIAL_SLOT, 27, 47, this::isMaterial)
+                .withSlot(DIE_SLOT, 76, 47, this::isDie)
                 .withResultSlot(2, 134, 47)
                 .build();
     }
 
-    private @Nullable CoinMaterial getMaterial(ItemStack stack) {
-        return stack.getItemHolder().getData(MintingDataMaps.COIN_MATERIALS);
+    private boolean isMaterial(ItemStack stack) {
+        return stack.getItemHolder().getData(MintingDataMaps.COIN_MATERIALS) != null;
     }
 
     private @Nullable Bitmap getDieShape(ItemStack stack) {
         return stack.get(MintingComponents.DIE_SHAPE);
+    }
+
+    private boolean isDie(ItemStack stack) {
+        return getDieShape(stack) != null;
     }
 }

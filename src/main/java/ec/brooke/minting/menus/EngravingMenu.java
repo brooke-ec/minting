@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -22,7 +23,8 @@ public class EngravingMenu extends ItemCombinerMenu {
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
     private static final List<Item> INPUT_ITEMS = List.of(Items.NETHERITE_INGOT, MintingItems.STRIKING_DIE.get());
-    private Bitmap bitmap;
+    @Nullable
+    private Bitmap bitmap = null;
 
     public EngravingMenu(int containerId, Inventory playerInventory) {
         this(containerId, playerInventory, ContainerLevelAccess.NULL);
@@ -34,15 +36,18 @@ public class EngravingMenu extends ItemCombinerMenu {
 
     @Override
     protected boolean mayPickup(@NotNull Player player, boolean hasStack) {
-        return !this.resultSlots.isEmpty();
+        return isValidInput(inputSlots.getItem(INPUT_SLOT)) && bitmap != null;
     }
 
     @Override
     protected void onTake(@NotNull Player player, @NotNull ItemStack stack) {
-        stack.shrink(1);
-        slots.get(INPUT_SLOT).set(stack);
         stack.onCraftedBy(player.level(), player, stack.getCount());
         this.resultSlots.awardUsedRecipes(player, List.of(this.inputSlots.getItem(INPUT_SLOT)));
+
+        // I think there might be a bug here, because `stack` is different things depending on if quick move is used or not
+        if (inputSlots.getItem(INPUT_SLOT).getCount() == stack.getCount()) this.inputSlots.setItem(INPUT_SLOT, ItemStack.EMPTY);
+        else inputSlots.getItem(INPUT_SLOT).setCount(stack.getCount()); // quick move path (hopefully)
+
         player.level().playSeededSound(null,
                 player.getX(), player.getY(),
                 player.getZ(), SoundEvents.ANVIL_USE,
