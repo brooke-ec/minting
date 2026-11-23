@@ -7,12 +7,14 @@ import ec.brooke.minting.Minting;
 import ec.brooke.minting.client.rendering.CoinCache;
 import ec.brooke.minting.client.rendering.CoinOverride;
 import ec.brooke.minting.data.Bitmap;
+import ec.brooke.minting.items.MintingItems;
 import ec.brooke.minting.items.components.CoinDesign;
 import ec.brooke.minting.items.components.MintingComponents;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.item.ItemArgument;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -67,7 +69,22 @@ public class MintingCommands {
                                                         throw new IllegalArgumentException("Selected item is not a coin.");
                                                     stack.set(MintingComponents.MINTER, StringArgumentType.getString(context, "name"));
                                                     return Command.SINGLE_SUCCESS;
-                                                }))))
+                                                }))).then(Commands.literal("dieify")
+                                        .executes(context -> {
+                                            ServerPlayer player = context.getSource().getPlayerOrException();
+
+                                            ItemStack stack = player.getInventory().getSelected();
+                                            @Nullable CoinDesign design = stack.get(MintingComponents.COIN_DESIGN);
+                                            if (design == null) throw new IllegalArgumentException("Selected item is not a coin.");
+
+                                            ItemStack die = MintingItems.STRIKING_DIE.toStack();
+                                            die.set(MintingComponents.DIE_SHAPE, design.bitmap());
+                                            player.getInventory().setItem(player.getInventory().selected, die);
+
+                                            return Command.SINGLE_SUCCESS;
+                                        })
+                                )
+                        )
         );
     }
 }
