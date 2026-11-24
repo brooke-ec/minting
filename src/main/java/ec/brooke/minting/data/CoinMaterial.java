@@ -36,7 +36,14 @@ public record CoinMaterial(Ingredient ingredient, ResourceLocation texture, Comp
             0x5e0909, 0x81bbeb
     );
 
-    private static final Map<Item, Optional<Holder.Reference<CoinMaterial>>> RESOLVE_CACHE = new LinkedHashMap<>(16, 0.75f, true);
+    private static final int CACHE_MAX_SIZE = 256;
+
+    private static final Map<Item, Optional<Holder.Reference<CoinMaterial>>> RESOLVE_CACHE = new LinkedHashMap<>(16, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<Item, Optional<Holder.Reference<CoinMaterial>>> eldest) {
+            return size() > CACHE_MAX_SIZE;
+        }
+    };
 
     public static Optional<Holder.Reference<CoinMaterial>> resolve(HolderLookup.Provider registries, ItemStack stack) {
         if (stack.isEmpty()) return Optional.empty();
