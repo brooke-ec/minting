@@ -11,5 +11,15 @@
   "item.minting.coin.gold": "Gold Coin",
   "item.minting.coin.iron": "Iron Coin",
   "item.minting.coin.copper": "Copper Coin",
-  "item.minting.coin.netherite": "Netherite Coin"
+  "item.minting.coin.netherite": "Netherite Coin",
+  "command.minting.render.enable.enabled": "Custom coin rendering enabled",
+  "command.minting.render.enable.disabled": "Custom coin rendering disabled",
+  "command.minting.render.rebuild.success": "Rebuilt coin rendering cache",
+  "command.minting.render.save.success": "Coin texture saved to %s",
+  "command.minting.render.save.failure": "Could not save coin texture: %s",
+  "command.minting.modify.invert.success": "Inverted shape of %s",
+  "command.minting.modify.material.success": "Coin's material updated to \"%s\"",
+  "command.minting.modify.minter.success": "Coin's minted by label updated to \"%s\"",
+  "command.minting.modify.dieify.success": "The coin was successfully turned into a die",
+  "command.minting.not_coin": "The item you are holding is not a coin"
 }

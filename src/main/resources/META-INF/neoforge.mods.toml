@@ -7,6 +7,7 @@ version="${mod_version}"
 displayName="${mod_name}"
 authors="brooke-ec"
 displayURL="https://github.com/brooke-ec/minting"
+logoFile = "assets/${mod_id}/logo.png"
 description='''
 Allows players to create custom coins for your SMP!
 '''

@@ -83,7 +83,8 @@ public class CoinCache {
         BakedModel model = MODEL_CACHE.get(design);
 
         if (model == null) {
-            model = CoinModel.build(idOf(design), CoinTexture.build(design), template);
+            NativeImage texture = CoinTexture.build(design);
+            model = CoinModel.build(idOf(design), texture, template);
             MODEL_CACHE.put(design, model);
         }
 

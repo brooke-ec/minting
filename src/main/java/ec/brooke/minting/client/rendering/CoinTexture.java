@@ -48,6 +48,7 @@ public class CoinTexture {
                 }
             }
         }
+        
         return image;
     }
 

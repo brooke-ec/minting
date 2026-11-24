@@ -8,7 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import java.util.Arrays;
 import java.util.Base64;
 
-public class Bitmap implements Cloneable {
+public class Bitmap {
     public static final Bitmap DEFAULT = new Bitmap(Base64.getDecoder().decode("AAAAAAAAAABVBZRvQf4bpKoBVQUAAAAAAA=="));
     public static final int DEPTH = 2; // 2 bits per pixel
     public static final int SIZE = 10; // 10x10 pixels
@@ -26,6 +26,7 @@ public class Bitmap implements Cloneable {
                 return new Bitmap(bytes);
             }
     );
+
     private final byte[] bytes;
 
     public Bitmap() {
@@ -84,17 +85,20 @@ public class Bitmap implements Cloneable {
         Arrays.fill(bytes, (byte) 0xFF);
     }
 
-    @Override
-    public Bitmap clone() {
+    public Bitmap copy() {
         return new Bitmap(bytes.clone());
     }
 
-    public void invert() {
+    public Bitmap inverted() {
+        Bitmap bitmap = this.copy();
+        
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
-                int value = get(x, y);
-                set(x, y, 3 - value);
+                int value = bitmap.get(x, y);
+                bitmap.set(x, y, 3 - value);
             }
         }
+
+        return bitmap;
     }
 }

@@ -94,7 +94,7 @@ public class EngravingScreen extends ItemCombinerScreen<EngravingMenu> {
         Bitmap shape = menu.slots.get(EngravingMenu.INPUT_SLOT).getItem().get(MintingComponents.DIE_SHAPE);
 
         if (shape != null) {
-            bitmap = shape.clone();
+            bitmap = shape.copy();
             PacketDistributor.sendToServer(new ServerboundEngravePacket(bitmap));
         }
     }
