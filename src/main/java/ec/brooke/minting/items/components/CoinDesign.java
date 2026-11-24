@@ -4,27 +4,30 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import ec.brooke.minting.data.Bitmap;
 import ec.brooke.minting.data.CoinMaterial;
-import ec.brooke.minting.data.MintingDataMaps;
+import ec.brooke.minting.data.MintingRegistries;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 
-public record CoinDesign(Bitmap bitmap, ResourceLocation item) {
-    public static final CoinDesign FALLBACK = new CoinDesign(Bitmap.DEFAULT, null);
+public record CoinDesign(ResourceKey<CoinMaterial> materialKey, Bitmap bitmap) {
+    public static final CoinDesign DEFAULT = new CoinDesign(null, Bitmap.DEFAULT);
     public static final Codec<CoinDesign> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Bitmap.CODEC.fieldOf("shape").forGetter(CoinDesign::bitmap),
-            ResourceLocation.CODEC.fieldOf("material").forGetter(CoinDesign::item)
+            ResourceKey.codec(MintingRegistries.COIN_MATERIAL).fieldOf("material").forGetter(CoinDesign::materialKey),
+            Bitmap.CODEC.fieldOf("shape").forGetter(CoinDesign::bitmap)
     ).apply(instance, CoinDesign::new));
 
     public static final StreamCodec<ByteBuf, CoinDesign> STREAM_CODEC = StreamCodec.composite(
+            ResourceKey.streamCodec(MintingRegistries.COIN_MATERIAL), CoinDesign::materialKey,
             Bitmap.STREAM_CODEC, CoinDesign::bitmap,
-            ResourceLocation.STREAM_CODEC, CoinDesign::item,
             CoinDesign::new
     );
 
-    public CoinMaterial material() {
-        return BuiltInRegistries.ITEM.getHolder(item)
-                .map(holder -> holder.getData(MintingDataMaps.COIN_MATERIALS)).orElse(CoinMaterial.FALLBACK);
+    public CoinMaterial material(HolderLookup.Provider registries) {
+        return registries.lookup(MintingRegistries.COIN_MATERIAL)
+                .flatMap(l -> l.get(this.materialKey))
+                .map(Holder::value)
+                .orElse(CoinMaterial.DEFAULT);
     }
 }

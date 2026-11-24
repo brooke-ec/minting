@@ -2,10 +2,11 @@
   "block.minting.engraving_table": "Engraving Table",
   "menu.title.minting.engraving": "Engrave Die",
   "item.minting.striking_die": "Striking Die",
-  "item.minting.coin": "%s Coin",
-  "material.minting.unknown": "Unknown",
-  "material.minting.gold": "Gold",
   "block.minting.coining_press": "Coining Press",
   "menu.title.minting.coining": "Mint Coins",
-  "item.minting.coin.minter": "Minted by %s"
+  "item.minting.coin.minter": "Minted by %s",
+  "item.minting.copper_nugget": "Copper Nugget",
+  "item.minting.coin.unknown": "Unknown Coin",
+  "item.minting.coin.gold": "Gold Coin",
+  "item.minting.coin.copper": "Copper Coin"
 }

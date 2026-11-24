@@ -5,11 +5,11 @@ import ec.brooke.minting.menus.CoiningMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +40,7 @@ public class CoiningScreen extends ItemCombinerScreen<CoiningMenu> {
 
     private void renderIcon(Slot slot, ResourceLocation icon, float alpha, GuiGraphics guiGraphics, int x, int y) {
         if (slot.hasItem()) return;
-        TextureAtlasSprite textureatlassprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(icon);
+        TextureAtlasSprite textureatlassprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(icon);
         guiGraphics.blit(x + slot.x, y + slot.y, 0, 16, 16, textureatlassprite, 1.0F, 1.0F, 1.0F, alpha);
     }
 }

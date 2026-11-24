@@ -3,12 +3,15 @@ package ec.brooke.minting.client.rendering;
 import com.mojang.blaze3d.platform.NativeImage;
 import ec.brooke.minting.Minting;
 import ec.brooke.minting.data.CoinMaterial;
-import ec.brooke.minting.data.MintingDataMaps;
+import ec.brooke.minting.data.MintingRegistries;
 import ec.brooke.minting.items.components.CoinDesign;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -27,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Minting.MODID)
 public class CoinCache {
@@ -52,14 +56,24 @@ public class CoinCache {
     }
 
     public static void reset() {
-        var manager = Minecraft.getInstance().getTextureManager();
+        Minecraft minecraft = Minecraft.getInstance();
+
+        TextureManager manager = minecraft.getTextureManager();
+        ClientLevel level = minecraft.level;
+        if (level == null) return;
+
         MATERIAL_CACHE.keySet().forEach(m -> manager.release(m.texture()));
         MATERIAL_CACHE.clear();
 
         // load all coin materials into the cache
-        for (CoinMaterial material : BuiltInRegistries.ITEM.getDataMap(MintingDataMaps.COIN_MATERIALS).values())
-            MATERIAL_CACHE.put(material, loadTexture(material.texture()));
-        unknownMaterial = loadTexture(ResourceLocation.fromNamespaceAndPath(Minting.MODID, "item/unknown_coin"));
+        unknownMaterial = loadTexture(CoinMaterial.DEFAULT.texture());
+        MATERIAL_CACHE.putAll(level.registryAccess()
+                .lookup(MintingRegistries.COIN_MATERIAL)
+                .stream().flatMap(HolderLookup::listElements)
+                .map(Holder.Reference::value)
+                .map(h -> Map.entry(h, loadTexture(h.texture())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
+        );
 
         MODEL_CACHE.keySet().forEach(d -> manager.release(idOf(d)));
         MODEL_CACHE.clear();
@@ -100,10 +114,9 @@ public class CoinCache {
             } catch (IOException e) {
                 Minting.LOGGER.error("Failed to read coin texture {}", path, e);
             }
-        } else {
-            Minting.LOGGER.error("Missing coin texture {}", path);
         }
 
+        Minting.LOGGER.error("Missing coin texture {}", path);
         return Objects.requireNonNull(MissingTextureAtlasSprite.getTexture().getPixels());
     }
 

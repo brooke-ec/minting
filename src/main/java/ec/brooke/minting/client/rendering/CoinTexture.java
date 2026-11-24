@@ -3,12 +3,16 @@ package ec.brooke.minting.client.rendering;
 import com.mojang.blaze3d.platform.NativeImage;
 import ec.brooke.minting.data.Bitmap;
 import ec.brooke.minting.items.components.CoinDesign;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.util.FastColor;
+
+import java.util.Objects;
 
 public class CoinTexture {
     private static final int OFFSET = 3;
     private static final float BITMAP_1 = 0.85f;
-    private static final float BITMAP_2 = 0.30f;
+    private static final float BITMAP_2 = 0.50f;
     private static final float BEVEL_DARK = 0.20f;
     private static final float BEVEL_LIGHT = 0.45f;
 
@@ -16,9 +20,10 @@ public class CoinTexture {
     }
 
     public static NativeImage build(CoinDesign coin) {
-        NativeImage image = CoinCache.getMaterial(coin.material());
-        int dark = FastColor.ARGB32.opaque(coin.material().dark());
-        int light = FastColor.ARGB32.opaque(coin.material().light());
+        RegistryAccess registries = Objects.requireNonNull(Minecraft.getInstance().level).registryAccess();
+        NativeImage image = CoinCache.getMaterial(coin.material(registries));
+        int dark = FastColor.ARGB32.opaque(coin.material(registries).dark());
+        int light = FastColor.ARGB32.opaque(coin.material(registries).light());
 
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {

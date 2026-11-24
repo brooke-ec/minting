@@ -29,7 +29,7 @@ public class CoinOverride extends BakedModelWrapper<BakedModel> {
             if (!enabled) return model;
 
             @Nullable CoinDesign design = stack.get(MintingComponents.COIN_DESIGN);
-            if (design == null) design = CoinDesign.FALLBACK;
+            if (design == null) design = CoinDesign.DEFAULT;
             return CoinCache.getModel(design);
         }
     };
@@ -50,7 +50,7 @@ public class CoinOverride extends BakedModelWrapper<BakedModel> {
     }
 
     public static void setEnabled(boolean enabled) {
-        
+
         CoinOverride.enabled = enabled;
     }
 

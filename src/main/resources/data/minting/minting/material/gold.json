@@ -1,0 +1,7 @@
+{
+  "name": { "translate": "item.minting.coin.gold" },
+  "ingredient": { "tag": "c:nuggets/gold" },
+  "texture": "minting:item/coin/gold",
+  "light": 4294964400,
+  "dark": 4286529290
+}

@@ -3,6 +3,8 @@ package ec.brooke.minting.items;
 import ec.brooke.minting.items.components.CoinDesign;
 import ec.brooke.minting.items.components.MintingComponents;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,10 +24,12 @@ public class CoinItem extends Item {
     public @NotNull Component getName(ItemStack stack) {
         CoinDesign design = Objects.requireNonNullElse(
                 stack.get(MintingComponents.COIN_DESIGN),
-                CoinDesign.FALLBACK
+                CoinDesign.DEFAULT
         );
 
-        return Component.translatableEscape(this.getDescriptionId(stack), Component.translatable(design.material().translationKey()));
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level == null) return super.getName(stack);
+        return design.material(level.registryAccess()).name();
     }
 
     @Override

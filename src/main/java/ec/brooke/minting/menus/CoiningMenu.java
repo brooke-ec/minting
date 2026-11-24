@@ -2,12 +2,11 @@ package ec.brooke.minting.menus;
 
 import ec.brooke.minting.blocks.MintingBlocks;
 import ec.brooke.minting.data.Bitmap;
-import ec.brooke.minting.data.MintingDataMaps;
+import ec.brooke.minting.data.CoinMaterial;
 import ec.brooke.minting.items.MintingItems;
 import ec.brooke.minting.items.components.CoinDesign;
 import ec.brooke.minting.items.components.MintingComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -75,8 +74,8 @@ public class CoiningMenu extends ItemCombinerMenu {
         }
 
         ItemStack stack = MintingItems.COIN.toStack();
-        ResourceLocation material = BuiltInRegistries.ITEM.getKey(input.getItem());
-        stack.set(MintingComponents.COIN_DESIGN, new CoinDesign(shape, material));
+        Holder.Reference<CoinMaterial> material = CoinMaterial.resolve(player.level().registryAccess(), input).orElseThrow();
+        stack.set(MintingComponents.COIN_DESIGN, new CoinDesign(material.key(), shape));
         stack.set(MintingComponents.MINTER, player.getGameProfile().getName());
         stack.setCount(input.getCount());
         resultSlots.setItem(OUTPUT_SLOT, stack);
@@ -102,7 +101,7 @@ public class CoiningMenu extends ItemCombinerMenu {
     }
 
     private boolean isMaterial(ItemStack stack) {
-        return stack.getItemHolder().getData(MintingDataMaps.COIN_MATERIALS) != null;
+        return CoinMaterial.resolve(player.level().registryAccess(), stack).isPresent();
     }
 
     private @Nullable Bitmap getDieShape(ItemStack stack) {
