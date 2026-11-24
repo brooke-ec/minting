@@ -6,8 +6,10 @@
   "menu.title.minting.coining": "Mint Coins",
   "item.minting.coin.minter": "Minted by %s",
   "item.minting.copper_nugget": "Copper Nugget",
+  "item.minting.netherite_nugget": "Netherite Nugget",
   "item.minting.coin.unknown": "Unknown Coin",
   "item.minting.coin.gold": "Gold Coin",
   "item.minting.coin.iron": "Iron Coin",
-  "item.minting.coin.copper": "Copper Coin"
+  "item.minting.coin.copper": "Copper Coin",
+  "item.minting.coin.netherite": "Netherite Coin"
 }

@@ -29,12 +29,15 @@ public class MintingItems {
 
     public static final DeferredItem<Item> COPPER_NUGGET = ITEMS.registerSimpleItem("copper_nugget");
 
+    public static final DeferredItem<Item> NETHERITE_NUGGET = ITEMS.registerSimpleItem("netherite_nugget");
+
     @SubscribeEvent
     public static void addCreativeTabs(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             event.accept(ENGRAVING_TABLE);
             event.accept(COINING_PRESS);
         } else if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(NETHERITE_NUGGET);
             event.accept(COPPER_NUGGET);
         }
     }

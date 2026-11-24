@@ -1,0 +1,7 @@
+{
+  "name": { "translate": "item.minting.coin.netherite" },
+  "ingredient": { "tag": "c:nuggets/netherite" },
+  "texture": "minting:item/coin/netherite",
+  "light": 8285822,
+  "dark": 2232597
+}
