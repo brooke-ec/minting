@@ -1,0 +1,7 @@
+{
+  "name": { "translate": "item.minting.coin.iron" },
+  "ingredient": { "tag": "c:nuggets/iron" },
+  "texture": "minting:item/coin/iron",
+  "light": 15922943,
+  "dark": 4871280
+}
