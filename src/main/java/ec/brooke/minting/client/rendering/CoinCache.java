@@ -21,7 +21,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
-import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -55,7 +54,7 @@ public class CoinCache {
         reset();
     }
 
-    public static void reset() {
+    public static synchronized void reset() {
         Minecraft minecraft = Minecraft.getInstance();
 
         TextureManager manager = minecraft.getTextureManager();
@@ -79,7 +78,7 @@ public class CoinCache {
         MODEL_CACHE.clear();
     }
 
-    public static BakedModel getModel(CoinDesign design) {
+    public static synchronized @NotNull BakedModel getModel(CoinDesign design) {
         BakedModel model = MODEL_CACHE.get(design);
 
         if (model == null) {
@@ -95,7 +94,7 @@ public class CoinCache {
         return ResourceLocation.fromNamespaceAndPath(Minting.MODID, "coin/" + design.hashCode());
     }
 
-    public static @NotNull NativeImage getMaterial(CoinMaterial material) {
+    public static synchronized @NotNull NativeImage getMaterial(CoinMaterial material) {
         NativeImage image = MATERIAL_CACHE.get(material);
         if (image == null) image = Objects.requireNonNull(unknownMaterial);
 
@@ -119,11 +118,6 @@ public class CoinCache {
 
         Minting.LOGGER.error("Missing coin texture {}", path);
         return Objects.requireNonNull(MissingTextureAtlasSprite.getTexture().getPixels());
-    }
-
-    @SubscribeEvent
-    public static void datapackSync(OnDatapackSyncEvent event) {
-        reset();
     }
 
     @SubscribeEvent
