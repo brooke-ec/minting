@@ -4,7 +4,10 @@ import ec.brooke.minting.blocks.MintingBlocks;
 import ec.brooke.minting.data.Bitmap;
 import ec.brooke.minting.items.MintingItems;
 import ec.brooke.minting.items.components.MintingComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
@@ -12,7 +15,6 @@ import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +24,7 @@ import java.util.List;
 public class EngravingMenu extends ItemCombinerMenu {
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
-    private static final List<Item> INPUT_ITEMS = List.of(Items.NETHERITE_INGOT, MintingItems.STRIKING_DIE.get());
+    private static final TagKey<Item> INGREDIENT = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("minting", "die_ingredients"));
     @Nullable
     private Bitmap bitmap = null;
 
@@ -99,6 +101,6 @@ public class EngravingMenu extends ItemCombinerMenu {
     }
 
     public boolean isValidInput(ItemStack stack) {
-        return INPUT_ITEMS.contains(stack.getItem());
+        return stack.is(INGREDIENT) || stack.is(MintingItems.STRIKING_DIE.get());
     }
 }
