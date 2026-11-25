@@ -13,13 +13,14 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record CoinMaterial(Ingredient ingredient, ResourceLocation texture, Component name, int dark, int light) {
+public record CoinMaterial(@NotNull Ingredient ingredient, @NotNull ResourceLocation texture, @NotNull Component name, int dark, int light) {
 
     public static final Codec<CoinMaterial> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Ingredient.CODEC.fieldOf("ingredient").forGetter(CoinMaterial::ingredient),
