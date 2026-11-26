@@ -7,7 +7,8 @@ mechanisms to secure player created currencies for your SMP!
 
 ## Designing
 
-A coin design can be created using the engraving table, which can be written to a striking die using a netherite ingot.
+A coin design can be created using the engraving table, which can be written to a striking die using a netherite ingot. The engraving table presents the player
+with a 10x10 grid to draw their coin. Pixels can be subtracted with left click, and added with right click.
 
 <p>
     <img alt="the engraving table" width="80" src="images/engraving_table.png">
