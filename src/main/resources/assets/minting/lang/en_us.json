@@ -5,6 +5,7 @@
   "block.minting.coining_press": "Coining Press",
   "menu.title.minting.coining": "Mint Coins",
   "item.minting.coin.minter": "Minted by %s",
+  "item.minting.coin": "Minted Coin",
   "item.minting.copper_nugget": "Copper Nugget",
   "item.minting.netherite_nugget": "Netherite Nugget",
   "item.minting.coin.unknown": "Unknown Coin",
